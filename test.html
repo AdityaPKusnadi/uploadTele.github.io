@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+</head>
+<body>
+    <form  method="post">
+    <input type="file" name="image" id="image">
+    <input type="text" name="caption" id="caption">
+    <input type="submit" name="submit" value="submit">
+    </form>
+</body>
+
+<!-- script from testAPi.js -->
+<!-- <script src="testApi.js"></script> -->
+<script>
+
+    function UploadImageToTelegram(image, caption) {
+        // get token from localStorage
+        var token = localStorage.getItem('token');
+        // get chatId from localStorage
+        var chatId = localStorage.getItem('chatId');
+        // get form data
+        var formData = new FormData();
+        formData.append('chat_id', '-1001410027840');
+        formData.append('photo', image);
+        formData.append('caption', caption);
+        // send data to telegram API
+        var token='1448616115:AAF4nYNFAf6Gib_fJtEXLKcHCQvEYwP37kY';
+        fetch('https://api.telegram.org/bot'+token+'/sendPhoto', {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data){
+            console.log(data);
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+    }
+
+    // if submit button clicked then send image to telegram
+    document.querySelector('input[type="submit"]').addEventListener('click', function(e){
+        e.preventDefault();
+        // get image
+        var image = document.querySelector('input[type="file"]').files[0];
+        // get caption
+        var caption = document.querySelector('input[type="text"]').value;
+        // send image to telegram
+        UploadImageToTelegram(image, caption);
+    });
+
+</script>
+</html>
